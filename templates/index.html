@@ -51,22 +51,43 @@
       });
 
       document.getElementById("generateBtn").onclick = async () => {
+        const generateBtn = document.getElementById("generateBtn");
+        const originalText = generateBtn.innerText;
+        
         const code = editor.getValue();
+        if (!code.trim()) {
+            alert("Please paste some code before generating a snapshot.");
+            return;
+        }
 
-        const formData = new FormData();
-        formData.append("code", code);
+        try {
+            generateBtn.innerText = "Generating...";
+            generateBtn.disabled = true;
+            
+            const formData = new FormData();
+            formData.append("code", code);
 
-        const response = await fetch("/generate", {
-          method: "POST",
-          body: formData,
-        });
+            const response = await fetch("/generate", {
+              method: "POST",
+              body: formData,
+            });
 
-        const blob = await response.blob();
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || "Failed to generate snapshot");
+            }
 
-        const url = URL.createObjectURL(blob);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
 
-        document.getElementById("previewImage").src = url;
-        document.getElementById("downloadBtn").href = url;
+            document.getElementById("previewImage").src = url;
+            document.getElementById("downloadBtn").href = url;
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            generateBtn.innerText = originalText;
+            generateBtn.disabled = false;
+        }
       };
     </script>
   </body>
