@@ -1,5 +1,22 @@
-env
-.venv
-venv
+# Environments
+env/
+venv/
 .env
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Application specific
 uvicorn.log
+outputs/
+*.png
+test_renderer.py
+
+# IDEs
+.idea/
+.vscode/
+.DS_Store

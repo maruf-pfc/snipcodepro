@@ -1,33 +1,54 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Code Snapshot</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Snapshot | Create Beautiful Snippets</title>
 
     <link rel="stylesheet" href="/static/style.css" />
-
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
   </head>
 
   <body>
     <div class="container">
-      <h1>Code Snapshot</h1>
-
-      <div id="editor"></div>
-
-      <button id="generateBtn">Generate Snapshot</button>
-
-      <div class="preview-container">
-        <div class="mac-bar">
-          <span class="red"></span>
-          <span class="yellow"></span>
-          <span class="green"></span>
-        </div>
-
-        <img id="previewImage" />
+      <div class="header">
+        <h1>Code Snapshot</h1>
+        <p class="subtitle">Generate beautiful, shareable images from your code instantly.</p>
       </div>
 
-      <div class="actions">
-        <a id="downloadBtn" download="code-snapshot.png">Download</a>
+      <div class="main-content">
+        <!-- Left Side: Editor -->
+        <div class="editor-section">
+          <div id="editor-wrapper">
+            <div id="editor"></div>
+            <div class="toolbar">
+                <select id="languageSelector" class="lang-select">
+                    <option value="cpp">C++</option>
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="java">Java</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="sql">SQL</option>
+                </select>
+                <button id="generateBtn">
+                    Generate Snapshot ✨
+                </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Preview -->
+        <div class="preview-section">
+          <div class="preview-container" id="previewContainer">
+            <img id="previewImage" alt="Generated Code Snapshot" />
+            <div class="actions">
+              <a id="downloadBtn" download="code-snapshot.png">Download Image</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -42,11 +63,19 @@
 
       require(["vs/editor/editor.main"], function () {
         editor = monaco.editor.create(document.getElementById("editor"), {
-          value: `// paste your code here`,
+          value: `// Paste your code here\n\nint main() {\n    return 0;\n}`,
           language: "cpp",
           theme: "vs-dark",
-          fontSize: 16,
+          fontSize: 15,
+          fontFamily: "JetBrains Mono, Fira Code, monospace",
           minimap: { enabled: false },
+          roundedSelection: true,
+          scrollBeyondLastLine: false,
+        });
+        
+        // Sync language selector with Monaco Editor
+        document.getElementById("languageSelector").addEventListener("change", (e) => {
+           monaco.editor.setModelLanguage(editor.getModel(), e.target.value);
         });
       });
 
@@ -64,8 +93,11 @@
             generateBtn.innerText = "Generating...";
             generateBtn.disabled = true;
             
+            const selectedLanguage = document.getElementById("languageSelector").value;
+            
             const formData = new FormData();
             formData.append("code", code);
+            formData.append("language", selectedLanguage);
 
             const response = await fetch("/generate", {
               method: "POST",
@@ -80,8 +112,16 @@
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
 
-            document.getElementById("previewImage").src = url;
+            const previewImg = document.getElementById("previewImage");
+            
+            // Show container only when the image is fully ready to avoid flickering broken image
+            previewImg.onload = () => {
+                document.getElementById("previewContainer").classList.add("active");
+            };
+            previewImg.src = url;
             document.getElementById("downloadBtn").href = url;
+            document.getElementById("previewContainer").scrollIntoView({ behavior: 'smooth', block: 'start' });
+
         } catch (error) {
             alert("Error: " + error.message);
         } finally {

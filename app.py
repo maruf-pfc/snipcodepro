@@ -17,12 +17,12 @@ async def home(request: Request):
 
 
 @app.post("/generate")
-async def generate(code: str = Form(...)):
+async def generate(code: str = Form(...), language: str = Form(None)):
     if not code or not code.strip():
         raise HTTPException(status_code=400, detail="Code cannot be empty")
         
     try:
-        output_path = generate_image(code)
+        output_path = generate_image(code, language=language)
         if not os.path.exists(output_path):
             raise HTTPException(status_code=500, detail="Image generation failed")
         return FileResponse(output_path, media_type="image/png", filename="code-snapshot.png")

@@ -1,10 +1,9 @@
 # Code Snapshot
 
 **Code Snapshot** is a lightweight tool that converts pasted code into **beautiful, social-media-ready PNG images**.
-It provides a **clean browser interface**, a **VS Code–style editor**, and a **Mac terminal–style preview** so you can see your snapshot before downloading.
+It provides a **clean browser interface** utilizing a split side-by-side view highlighting code with Pygments, and generates natively stylized PNG snapshots mimicking a sleek macOS window.
 
 Perfect for sharing code snippets on:
-
 - LinkedIn
 - Twitter / X
 - Dev communities
@@ -16,58 +15,41 @@ Perfect for sharing code snippets on:
 
 ## Features
 
-- VS Code–style **code editor**
-- **Mac terminal styled snapshots**
-- **Live preview** before download
-- **PNG export** for social media posts
-- Clean and minimal UI
-- Fast backend powered by FastAPI
-- Syntax-ready structure for future highlighting
-
----
-
-## Demo Workflow
-
-1. Open the web interface
-2. Paste your code into the editor
-3. Click **Generate Snapshot**
-4. Preview the generated image
-5. Download the PNG
+- VS Code–style **interactive Monaco code editor**
+- Side-by-Side Live layout for instant feedback
+- **Pygments Syntax Highlighting** with Monokai aesthetic
+- Custom **JetBrains Mono** typography support
+- **Mac terminal-styled snapshots** with drop shadows and curved borders
+- Fast backend powered by FastAPI and Pillow
 
 ---
 
 ## Tech Stack
 
 Backend
-
 - FastAPI
-- Pillow
+- Pillow (Image Generation Engine)
+- Pygments (Lexical Syntax Highlighting)
 
 Frontend
-
-- HTML
-- CSS
-- JavaScript
-- Monaco Editor (VS Code editor)
-
-Libraries
-
-- Pygments (planned for syntax highlighting)
+- HTML/CSS (Modern Flexbox + Glassmorphism Theme)
+- Vanilla JavaScript
+- Monaco Editor
 
 ---
 
 ## Installation
 
 Clone the repository
-
 ```bash
 git clone https://github.com/yourusername/code-snapshot.git
 cd code-snapshot
 ```
 
-Install dependencies
-
+Install dependencies into a virtual environment
 ```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -75,17 +57,15 @@ pip install -r requirements.txt
 
 ## Running the App
 
-Start the development server
-
+Start the development server:
 ```bash
 uvicorn app:app --reload
 ```
 
-Open the browser
+Open your browser to:
+`http://localhost:8000`
 
-```bash
-http://localhost:8000
-```
+Ensure you select your target language from the dropdown before generating the snapshot to get perfect syntax highlighting!
 
 ---
 
@@ -94,69 +74,35 @@ http://localhost:8000
 ```txt
 code-snapshot
 │
-├── app.py                 # FastAPI application
-├── generator.py           # Image generation logic
-├── requirements.txt
-├── README.md
+├── app.py                 # FastAPI application and routes
+├── generator.py           # Custom Pillow image generation & Pygments parsing
+├── requirements.txt       # Project dependencies
+├── README.md              # Documentation
+├── JetBrainsMono.ttf      # Developer Font Engine
 │
 ├── templates
-│   └── index.html         # Web UI
+│   └── index.html         # Web UI (Side-by-Side Layout)
 │
 ├── static
-│   └── style.css          # UI styling
+│   └── style.css          # Modern UI Theme Styles
 │
-└── outputs                # Generated images (optional)
+└── outputs                # Automatically stores generated images
 ```
 
 ---
 
-## Example Snapshot
-
-The generated image mimics a **Mac terminal window**:
-
-```cpp
-🔴 🟡 🟢
-
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int,int> mp;
-        ...
-    }
-};
-```
-
-This format works well for **technical posts and educational content**.
-
----
-
-## Future Improvements
-
-Planned upgrades for the project:
-
-- Syntax highlighting in images
-- Multiple color themes
-- Export as SVG
-- Copy image to clipboard
-- Line numbers toggle
-- Background gradients
-- Custom image size
-- Watermark / branding
-- Dark / light modes
-- VS Code theme support
+## Output Example
+The generated image mimics a high-resolution macOS application window containing your highlighted code snippet, right-aligned line numbers, and an immersive drop shadow. 
 
 ---
 
 ## License
 
-MIT License
+Apache License 2.0
 
 ---
 
 ## Author
 
 **Md. Maruf Sarker**
-
-Software Engineering Enthusiast
-Competitive Programmer
-Content Creator for Tech Learners
+Software Engineering Enthusiast | Competitive Programmer | Content Creator for Tech Learners
