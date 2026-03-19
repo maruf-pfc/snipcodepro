@@ -2,6 +2,8 @@
 
 **Live Demo:** [https://snipcodepro.vercel.app](https://snipcodepro.vercel.app)
 
+![SnipCode Pro Demo](public/demo.webp)
+
 SnipCode Pro is a premium, beautifully-designed developer tool that instantly converts your code snippets into stunning, high-resolution PNG images.
 
 Built with a tactile, skeuomorphic design system, it features multi-theme support, smart file name detection, and a fluid drag-and-drop experience. Instead of basic flat design, SnipCode Pro provides real depth, inset shadows, and a macOS-inspired window aesthetic.
