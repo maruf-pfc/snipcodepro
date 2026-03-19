@@ -45,9 +45,9 @@ export function EditorPanel({
   const editorRef = useRef<any>(null);
   const { theme } = useTheme();
   const { codeFont } = useCodeFont();
-  const activeFontVar =
-    CODE_FONTS.find((f) => f.id === codeFont)?.variable ||
-    'var(--font-jetbrains)';
+  const activeFontFamily =
+    CODE_FONTS.find((f) => f.id === codeFont)?.fontFamily ||
+    '"JetBrains Mono", monospace';
 
   const handleEditorMount = (editor: any) => {
     editorRef.current = editor;
@@ -62,8 +62,8 @@ export function EditorPanel({
         setTimeout(() => setFormatStatus(''), 2000);
       });
     } else {
-      setFormatStatus('No Formatter');
-      setTimeout(() => setFormatStatus(''), 2500);
+      setFormatStatus('Not Supported for ' + language.toUpperCase());
+      setTimeout(() => setFormatStatus(''), 3000);
     }
   };
 
@@ -72,27 +72,6 @@ export function EditorPanel({
     setTabSize(newSize);
     if (editorRef.current) {
       editorRef.current.getModel()?.updateOptions({ tabSize: newSize });
-
-      // Visually re-indent existing spaces for immediate feedback
-      const reindented = code
-        .split('\n')
-        .map((line) => {
-          const match = line.match(/^(\s+)/);
-          if (match) {
-            const spaces = match[1].length;
-            // Scale spaces proportionally
-            if (tabSize === 2 && newSize === 4)
-              return ' '.repeat(spaces * 2) + line.trimStart();
-            if (tabSize === 4 && newSize === 2)
-              return ' '.repeat(Math.ceil(spaces / 2)) + line.trimStart();
-          }
-          return line;
-        })
-        .join('\n');
-
-      if (reindented !== code) {
-        setCode(reindented);
-      }
     }
   };
 
@@ -262,7 +241,7 @@ export function EditorPanel({
               }}
               options={{
                 minimap: { enabled: false },
-                fontFamily: activeFontVar,
+                fontFamily: activeFontFamily,
                 fontSize: 14,
                 tabSize: tabSize,
                 fontLigatures: true,

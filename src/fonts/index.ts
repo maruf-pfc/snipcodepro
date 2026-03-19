@@ -41,31 +41,31 @@ export const CODE_FONTS = [
     id: 'jetbrains',
     name: 'JetBrains Mono',
     variable: 'var(--font-jetbrains)',
-    className: jetbrainsMono.variable,
+    fontFamily: jetbrainsMono.style.fontFamily,
   },
   {
     id: 'fira',
     name: 'Fira Code',
     variable: 'var(--font-fira)',
-    className: firaCode.variable,
+    fontFamily: firaCode.style.fontFamily,
   },
   {
     id: 'roboto',
     name: 'Roboto Mono',
     variable: 'var(--font-roboto)',
-    className: robotoMono.variable,
+    fontFamily: robotoMono.style.fontFamily,
   },
   {
     id: 'sourcecode',
     name: 'Source Code Pro',
     variable: 'var(--font-source-code)',
-    className: sourceCodePro.variable,
+    fontFamily: sourceCodePro.style.fontFamily,
   },
   {
     id: 'inconsolata',
     name: 'Inconsolata',
     variable: 'var(--font-inconsolata)',
-    className: inconsolata.variable,
+    fontFamily: inconsolata.style.fontFamily,
   },
 ] as const;
 
