@@ -73,6 +73,40 @@ export function EditorPanel({
     if (editorRef.current) {
       editorRef.current.getModel()?.updateOptions({ tabSize: newSize });
     }
+
+    let detectedIndent: number = tabSize;
+    const lines = code.split('\n');
+    for (const line of lines) {
+      const match = line.match(/^( +)\S/);
+      if (match && match[1].length > 1) {
+        // Find the first line with meaningful leading spaces (e.g. 2, 4, 8)
+        detectedIndent = match[1].length;
+        if (detectedIndent === 2 || detectedIndent === 4) {
+          break; // Stop at the first reliable indent level
+        }
+      }
+    }
+
+    if (detectedIndent === newSize) {
+      return; // The text already matches the desired visual size!
+    }
+
+    const reindented = lines
+      .map((line) => {
+        const leadingMatch = line.match(/^( +)/);
+        if (leadingMatch) {
+          const oldSpacesCount = leadingMatch[1].length;
+          const levels = oldSpacesCount / detectedIndent;
+          const newSpacesCount = Math.max(1, Math.round(levels * newSize));
+          return ' '.repeat(newSpacesCount) + line.substring(oldSpacesCount);
+        }
+        return line;
+      })
+      .join('\n');
+
+    if (reindented !== code) {
+      setCode(reindented);
+    }
   };
 
   const handleCopy = () => {
